@@ -24,7 +24,7 @@ const CalendarDayView = () => {
     }
     const getAppointmentsForDate = (date) => {
         const dateObj = new Date(date)
-        const dateStr = dateObj.toISOString().split("T")[0];
+        const dateStr = dateObj.toLocaleDateString('en-CA');
         return appointments.filter((appt) => appt.date === dateStr)
     }
 
@@ -63,7 +63,7 @@ const CalendarDayView = () => {
                     <AppointmentForm
                         patients={patientsList}
                         doctors={doctorsList}
-                        selectedDate={selectedDate.toISOString().split("T")[0]}
+                        selectedDate={selectedDate.toLocaleDateString('en-CA')}
                         onSave={handleSave}
                         onClose={() => setShowForm(false)}
                     />
