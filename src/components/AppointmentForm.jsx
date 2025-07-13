@@ -10,13 +10,14 @@ import {
     Typography,
 } from "@mui/material";
 
-const AppointmentForm = ({ patients, doctors, onSave, onClose, selectedDate }) => {
-    // ✅ Local state for form fields
-    const [selectedPatient, setSelectedPatient] = useState("");
-    const [selectedDoctor, setSelectedDoctor] = useState("");
-    const [selectedTime, setSelectedTime] = useState("");
+const AppointmentForm = ({ patients, doctors, onSave, onClose, selectedDate, appointmentToEdit }) => {
 
-    // ✅ Handle save
+
+    const [selectedPatient, setSelectedPatient] = useState(appointmentToEdit?.patientId || "");
+    const [selectedDoctor, setSelectedDoctor] = useState(appointmentToEdit?.doctorId || "");
+    const [selectedTime, setSelectedTime] = useState(appointmentToEdit?.time || "");
+
+    //Handle save
     const handleSaveClick = (e) => {
         e.preventDefault();
 
@@ -26,6 +27,7 @@ const AppointmentForm = ({ patients, doctors, onSave, onClose, selectedDate }) =
         }
 
         const newAppointment = {
+            id: appointmentToEdit?.id || Date.now(),
             date: selectedDate, // This will be set by parent
             patientId: parseInt(selectedPatient),
             doctorId: parseInt(selectedDoctor),

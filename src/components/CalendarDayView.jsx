@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, List, ListItem, TextField, Typography } from '@mui/material'
+import { Box, Button, Dialog, FormControl, InputLabel, List, ListItem, MenuItem, Select, TextField, Typography } from '@mui/material'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import React, { useEffect, useState } from 'react'
@@ -7,9 +7,12 @@ import patientsList from "../data/patients.json";
 import doctorsList from "../data/doctors.json";
 import AppointmentForm from './AppointmentForm';
 
-const CalendarDayView = () => {
+const CalendarDayView = ({ selectedDoctorFilter, selectedPatientFiilter }) => {
     const [selectedDate, setSelectedDate] = useState(new Date())
     const [showForm, setShowForm] = useState(false)
+
+    const [appointmentToEdit, setAppointmentToEdit] = useState(null);
+
     const [appointments, setAppointments] = useState(() => {
         const stored = localStorage.getItem("appointments");
         return stored ? JSON.parse(stored) : [];
@@ -19,17 +22,40 @@ const CalendarDayView = () => {
     }, [appointments])
 
     const handleSave = (newAppointment) => {
-        setAppointments((prev) => [...prev, newAppointment])
+        if (appointments.some((appt) => appt.id === newAppointment.id)) {
+            // Update
+            setAppointments((prev) =>
+                prev.map((appt) =>
+                    appt.id === newAppointment.id ? newAppointment : appt
+                )
+            );
+        } else {
+            // Add new
+            setAppointments((prev) => [...prev, newAppointment]);
+        }
         setShowForm(false);
-    }
+        setAppointmentToEdit(null);
+    };
+
+    const handleEdit = (appt) => {
+        setSelectedDate(new Date(appt.date));
+        setAppointmentToEdit(appt);
+        setShowForm(true);
+    };
     const getAppointmentsForDate = (date) => {
         const dateObj = new Date(date)
         const dateStr = dateObj.toLocaleDateString('en-CA');
-        return appointments.filter((appt) => appt.date === dateStr)
+        return appointments.filter((appt) => {
+            const mathcesDate = appt.date === dateStr
+            const matchesDoctor = selectedDoctorFilter === "" || appt.doctorId === parseInt(selectedDoctorFilter)
+            const matchesPatient = selectedPatientFiilter === "" || appt.patientId === parseInt(selectedPatientFiilter)
+            return mathcesDate && matchesDoctor && matchesPatient
+        })
     }
 
     return (
         <Box sx={{ p: 3 }}>
+
             <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                     label="Select date"
@@ -49,10 +75,12 @@ const CalendarDayView = () => {
                     const doctor = doctorsList.find((d) => d.id === appt.doctorId);
 
                     return (
-                        <ListItem key={index}>
-                            {patient?.name} with {doctor?.name} at {appt.time}
-                        </ListItem>
-                    )
+                        <li key={index} onClick={() => handleEdit(appt)} style={{ cursor: "pointer", fontSize: "10px" }}>
+                            {patient ? patient.name : "Unknown"} @ {appt.time}
+                            <hr />
+                        </li>
+                        
+                    );
                 })}
             </List>
             <Button variant="contained" onClick={() => setShowForm(true)}>
@@ -65,7 +93,8 @@ const CalendarDayView = () => {
                         doctors={doctorsList}
                         selectedDate={selectedDate.toLocaleDateString('en-CA')}
                         onSave={handleSave}
-                        onClose={() => setShowForm(false)}
+                        onClose={() => { setShowForm(false); setAppointmentToEdit(null); }}
+                        appointmentToEdit={appointmentToEdit}
                     />
                 )}
             </Dialog>
