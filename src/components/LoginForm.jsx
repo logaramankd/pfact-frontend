@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Typography } from '@mui/material'
+import { Alert, Box, Button, Card, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { checkCredentials } from '../utils/auth'
 import { useNavigate } from 'react-router-dom'
@@ -24,17 +24,18 @@ const LoginForm = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      minHeight:'97vh'
+      minHeight:'97vh',
+        bgcolor:"#fff59d",
     }}>
-      <Box
+      <Card
         component='form'
         onSubmit={handleSubmit}
         sx={{
           display: "flex",
           flexDirection: "column",
-          width: 300,
+          width: 400,
           mx: "auto",
-          // mt: 5,
+        
           gap: 2,
           border:'1px solid gainsboro',
           padding:5
@@ -47,7 +48,7 @@ const LoginForm = () => {
         <TextBox type='password' label='Enter Password' show={showPassword} setShow={setShowPassword} value={password} onChange={(e) => setPassword(e.target.value)} required />
         <Button type="submit" variant="contained">Login</Button>
         {error && <Alert severity="error">{error}</Alert>}
-      </Box>
+      </Card>
     </Box>
   )
 }
