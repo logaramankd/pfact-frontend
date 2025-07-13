@@ -6,12 +6,34 @@ import patientsList from "../data/patients.json"
 const Header = ({ selectedDoctorFilter, selectedPatientFiilter, setSelectedPatientFilter, setSelectedDoctorFilter, mode, toggleMode }) => {
     return (
         <AppBar position="static" sx={{ mb: 2 }}>
-            <Toolbar sx={{ justifyContent: "space-between", alignItems: "center" }}>
+            <Toolbar sx={{ p: 2, justifyContent: "space-between", alignItems: "center" }}>
                 <Typography variant="h6">Clinic Calendar</Typography>
 
                 <FormControl sx={{ width: 200, mb: 2 }}>
-                    <InputLabel>Select Doctor</InputLabel>
+                    <InputLabel sx={{
+                        color: 'white',
+                        '&.Mui-focused': {
+                            color: 'white',
+                        }
+                    }} id="filter">Select Doctor</InputLabel>
                     <Select
+                        sx={{
+                            '& .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'white',
+                            },
+                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                                borderColor: '#90caf9',
+                            },
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                borderColor: "white"
+                            },
+                            '& .MuiSvgIcon-root': {
+                                color: 'white',
+                            },
+                            color: 'white'
+                        }}
+                        labelId='filter'
+                        label='Select Doctor'
                         value={selectedDoctorFilter}
                         onChange={(e) => setSelectedDoctorFilter(e.target.value)}
                     >
@@ -23,8 +45,30 @@ const Header = ({ selectedDoctorFilter, selectedPatientFiilter, setSelectedPatie
                 </FormControl>
 
                 <FormControl sx={{ width: 200, mb: 2 }}>
-                    <InputLabel>Select Patient</InputLabel>
+                    <InputLabel sx={{
+                        color: 'white',
+                        '&.Mui-focused': {
+                            color: 'white',
+                        }
+                    }} id='filter'>Select Patient</InputLabel>
                     <Select
+                        sx={{
+                            '& .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'white',
+                            },
+                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                                borderColor: '#90caf9',
+                            },
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                borderColor: "white"
+                            },
+                            '& .MuiSvgIcon-root': {
+                                color: 'white',
+                            },
+                            color: 'white'
+                        }}
+                        labelId='filter'
+                        label='Select Patient'
                         value={selectedPatientFiilter}
                         onChange={(e) => setSelectedPatientFilter(e.target.value)}
                     >

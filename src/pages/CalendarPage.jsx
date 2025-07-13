@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import CalendarMonthView from '../components/CalendarMonthView'
-import { useMediaQuery } from '@mui/material'
+import { Box, useMediaQuery } from '@mui/material'
 import CalendarDayView from '../components/CalendarDayView'
 import Header from '../components/Header'
 
@@ -9,7 +9,12 @@ const CalendarPage = ({ mode, toggleMode }) => {
   const [selectedDoctorFilter, setSelectedDoctorFilter] = useState("")
   const [selectedPatientFiilter, setSelectedPatientFilter] = useState("")
   return (
-    <>
+    <Box sx={{
+      bgcolor: "#fff59d" ,display: 'flex',
+      flexDirection:'column',
+      alignItems: 'center',
+      minHeight: '100dvh'
+    }}>
       <Header
         selectedDoctorFilter={selectedDoctorFilter}
         setSelectedDoctorFilter={setSelectedDoctorFilter}
@@ -23,7 +28,7 @@ const CalendarPage = ({ mode, toggleMode }) => {
       ) : (
         <CalendarDayView selectedDoctorFilter={selectedDoctorFilter} selectedPatientFiilter={selectedPatientFiilter} />
       )}
-    </>
+    </Box>
   )
 }
 
